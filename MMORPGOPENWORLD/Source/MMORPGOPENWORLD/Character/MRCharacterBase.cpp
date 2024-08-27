@@ -17,14 +17,12 @@ void AMRCharacterBase::BeginPlay()
 	
 }
 
-// Called every frame
 void AMRCharacterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-// Called to bind functionality to input
 void AMRCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
