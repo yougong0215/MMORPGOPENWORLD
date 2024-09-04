@@ -27,7 +27,11 @@ public:
 
 	virtual void Begin(FQuat dir, FVector Size);
 
+	//virtual void OverlapedObject(AActor* OverlapedObject) override;
 public:
 	TObjectPtr<class UBoxComponent> BoxComponent;
-	SkillData Skill;
+	TObjectPtr<class UNiagaraComponent> comp;
+	FSkillStruct Skill;
+
+	bool _isStart = false;
 };
