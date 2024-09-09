@@ -16,11 +16,16 @@ class MMORPGOPENWORLD_API USkillDataListAsset : public UDataAsset
 	GENERATED_BODY()
 
 public:
-	void SetOwner(TObjectPtr<AActor> OwnerCS);
+	void SetFire(TObjectPtr<AActor> OwnerCS, UWorld* _world);
 	
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BP)
+	TSubclassOf<class AEffectObject> EffectObjectBPClass;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	float CoolDown = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	TArray<FSkillStruct> SkillList;
+
+
 };

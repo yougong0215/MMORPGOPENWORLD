@@ -9,7 +9,7 @@
 // Sets default values
 AEffectObject::AEffectObject()
 {
-	_isStart = false;
+	//_isStart = false;
 }
 
 // Called when the game starts or when spawned
@@ -26,17 +26,43 @@ void AEffectObject::Tick(float DeltaTime)
 		return;
 
 	FVector ForwardVector = GetActorForwardVector();
-	FVector MoveDirection = ForwardVector * 5 * DeltaTime;
+	FVector MoveDirection = ForwardVector * 1200 * DeltaTime;
 	SetActorLocation(GetActorLocation() + MoveDirection);
+	comp->AddRelativeLocation(MoveDirection);
 }
 
 // 플레이어에서 발사해야됨
-void AEffectObject::Begin(FQuat dir, FVector Size)
+void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world)
 {
-	SetActorRotation(dir);
-	BoxComponent->SetRelativeScale3D(Size);
+	Skill = _skill;
 
-	comp =  UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), Skill.Effect, FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 60.0f));
-	comp->Activate();
+	FRotator CurrentRotation = OwnerCS->GetActorRotation();
+	FVector location = OwnerCS->GetActorLocation();
+
+	CurrentRotation.Yaw += Skill.BulletRange;
+
+
+	SetActorRotation(CurrentRotation);
+	//BoxComponent->SetRelativeScale3D(Skill.BulletSize * FVector::One());
+	SetActorLocation(location);
+
+	
+	if (Skill.Effect)
+	{
+		comp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(_world, Skill.Effect, location + FVector(0,0,60));
+		comp->SetWorldRotation(CurrentRotation);
+		comp->SetWorldScale3D(FVector(2.0f));
+		comp->SetVisibility(true);
+		comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
+		// comp->Activate(); // 일반적으로 필요하지 않음
+
+		// 이펙트가 생성되지 않았을 경우 에러 처리
+		if (!comp)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to spawn Niagara system"));
+		}
+	}
+
+
 	_isStart = true;
 }

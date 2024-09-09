@@ -5,12 +5,20 @@
 #include "../CollisionObject.h"
 #include "EffectObject.h"
 
-void USkillDataListAsset::SetOwner(TObjectPtr<AActor> OwnerCS)
+void USkillDataListAsset::SetFire(TObjectPtr<AActor> OwnerCS, UWorld* _world)
 {
 
-	//for (AEffectObject* Object : Effects)
-	//{
-	//	ACollisionObject* co = Cast<ACollisionObject>(Object);
-	//	co->SetUP(OwnerCS);
-	//}
+    for (int i = 0; i < SkillList.Num(); i++)
+    {
+
+        if (EffectObjectBPClass)
+        {
+            //if(GetWorld())
+            AEffectObject* obj = _world->SpawnActor<AEffectObject>(EffectObjectBPClass);
+
+
+            obj->Begin(OwnerCS, SkillList[i], _world);
+        }
+
+    }
 }

@@ -25,10 +25,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Begin(FQuat dir, FVector Size);
+	virtual void Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world);
 
 	//virtual void OverlapedObject(AActor* OverlapedObject) override;
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BX)
 	TObjectPtr<class UBoxComponent> BoxComponent;
 	TObjectPtr<class UNiagaraComponent> comp;
 	FSkillStruct Skill;
