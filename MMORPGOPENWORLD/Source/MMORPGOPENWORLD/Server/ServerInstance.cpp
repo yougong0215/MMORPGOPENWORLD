@@ -61,6 +61,7 @@ void UServerInstance::Init()
 
 void UServerInstance::LoadMenu()
 {
+
 	if (MenuClass)
 	{
 		Menu = CreateWidget<UMainMenu>(this, MenuClass);
@@ -96,10 +97,13 @@ void UServerInstance::Host()
 		if (nullptr != ExistingSession)
 		{
 			SessionInterface->DestroySession(SESSION_NAME);
+
+			UE_LOG(LogTemp, Warning, TEXT("Click Host Btn!"));
 		}
 		else
 		{
 			CreateSession();
+			UE_LOG(LogTemp, Warning, TEXT("Click Host"));
 		}
 	}
 }

@@ -13,21 +13,21 @@ bool UMainMenu::Initialize()
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
-	if (!HostButton)
+	/*if (!HostButton)
 		return false;
-	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
+	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);*/
 
 	if (!JoinButton)
 		return false;
 	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 
-	if (!CancelJoinMenuButton)
+	/*if (!CancelJoinMenuButton)
 		return false;
 	CancelJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 
 	if (!ConfirmJoinMenuButton)
 		return false;
-	ConfirmJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
+	ConfirmJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);*/
 
 	if (!QuitButton)
 		return false;
@@ -38,9 +38,11 @@ bool UMainMenu::Initialize()
 
 void UMainMenu::HostServer()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Click Host Btn!"));
+	UE_LOG(LogTemp, Warning, TEXT("Click3333"));
+
 	if (MenuInterface != nullptr)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Click444"));
 		MenuInterface->Host();
 	}
 }
@@ -49,26 +51,26 @@ void UMainMenu::JoinServer()
 {
 	if (nullptr != MenuInterface)
 	{
-		if (IPAddressField)
+		/*if (IPAddressField)
 		{
 			const FString& Address = IPAddressField->GetText().ToString();
 			MenuInterface->Join(Address);
-		}
+		}*/
 	}
 }
 
 void UMainMenu::OpenJoinMenu()
 {
-	if (!ensure(MenuSwitcher != nullptr))return;
-	if (!ensure(JoinMenu != nullptr))return;
-	MenuSwitcher->SetActiveWidget(JoinMenu);
+
+	UE_LOG(LogTemp, Warning, TEXT("Click"));
+	HostServer();
 }
 
 void UMainMenu::OpenMainMenu()
 {
-	if (!ensure(MenuSwitcher != nullptr))return;
+	/*if (!ensure(MenuSwitcher != nullptr))return;
 	if (!ensure(MainMenu != nullptr))return;
-	MenuSwitcher->SetActiveWidget(MainMenu);
+	MenuSwitcher->SetActiveWidget(MainMenu);*/
 }
 
 void UMainMenu::QuitPressed()
