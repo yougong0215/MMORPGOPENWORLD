@@ -11,10 +11,12 @@ void UMenuWidget::Setup()
 	{
 		APlayerController* PlayerController = World->GetFirstPlayerController();
 
-		FInputModeUIOnly InputModeData;
+		FInputModeGameAndUI InputModeData;
 		InputModeData.SetWidgetToFocus(this->TakeWidget());
 		InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		InputModeData.SetHideCursorDuringCapture(false);
 
+		
 		if (PlayerController)
 		{
 			PlayerController->SetInputMode(InputModeData);

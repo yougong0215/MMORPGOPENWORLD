@@ -13,21 +13,9 @@ bool UMainMenu::Initialize()
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
-	/*if (!HostButton)
-		return false;
-	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);*/
-
 	if (!JoinButton)
 		return false;
 	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
-
-	/*if (!CancelJoinMenuButton)
-		return false;
-	CancelJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
-
-	if (!ConfirmJoinMenuButton)
-		return false;
-	ConfirmJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);*/
 
 	if (!QuitButton)
 		return false;
@@ -38,11 +26,9 @@ bool UMainMenu::Initialize()
 
 void UMainMenu::HostServer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Click3333"));
 
 	if (MenuInterface != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Click444"));
 		MenuInterface->Host();
 	}
 }
@@ -61,16 +47,7 @@ void UMainMenu::JoinServer()
 
 void UMainMenu::OpenJoinMenu()
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("Click"));
 	HostServer();
-}
-
-void UMainMenu::OpenMainMenu()
-{
-	/*if (!ensure(MenuSwitcher != nullptr))return;
-	if (!ensure(MainMenu != nullptr))return;
-	MenuSwitcher->SetActiveWidget(MainMenu);*/
 }
 
 void UMainMenu::QuitPressed()

@@ -7,9 +7,6 @@
 #include "MenuWidget.h"
 #include "MainMenu.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class MMORPGOPENWORLD_API UMainMenu : public UMenuWidget
 {
@@ -32,9 +29,6 @@ private:
 
 	UFUNCTION()
 	void OpenJoinMenu();
-
-	UFUNCTION()
-	void OpenMainMenu();
 
 	UFUNCTION()
 	void QuitPressed();
