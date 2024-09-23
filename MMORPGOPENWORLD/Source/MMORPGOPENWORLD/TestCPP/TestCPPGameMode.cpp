@@ -6,7 +6,7 @@
 
 ATestCPPGameMode::ATestCPPGameMode()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/StylizedCharactersPack/StylizedKnight/Blueprints/BP_StylizedKnight_Male"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/Characters/BasicCharacter"));
 
 	if (PlayerPawnBPClass.Class != NULL)
 	{
