@@ -98,12 +98,10 @@ void UServerInstance::Host()
 		{
 			SessionInterface->DestroySession(SESSION_NAME);
 
-			UE_LOG(LogTemp, Warning, TEXT("Click Host Btn!"));
 		}
 		else
 		{
 			CreateSession();
-			UE_LOG(LogTemp, Warning, TEXT("Click Host"));
 		}
 	}
 }

@@ -38,11 +38,9 @@ bool UMainMenu::Initialize()
 
 void UMainMenu::HostServer()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Click3333"));
 
 	if (MenuInterface != nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Click444"));
 		MenuInterface->Host();
 	}
 }
@@ -61,16 +59,7 @@ void UMainMenu::JoinServer()
 
 void UMainMenu::OpenJoinMenu()
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("Click"));
 	HostServer();
-}
-
-void UMainMenu::OpenMainMenu()
-{
-	/*if (!ensure(MenuSwitcher != nullptr))return;
-	if (!ensure(MainMenu != nullptr))return;
-	MenuSwitcher->SetActiveWidget(MainMenu);*/
 }
 
 void UMainMenu::QuitPressed()
