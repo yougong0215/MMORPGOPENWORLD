@@ -12,7 +12,7 @@
 #include "MainMenu.h"
 #include "MenuWidget.h"
 
-const static FName SESSION_NAME = TEXT("My Session Game");
+const static FName SESSION_NAME = TEXT("MySessionGame");
 UServerInstance::UServerInstance(const FObjectInitializer& ObjectInitializer)
 {
 	ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
@@ -44,13 +44,12 @@ void UServerInstance::Init()
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UServerInstance::OnDestroySessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UServerInstance::OnFindSessionComplete);
 
-			SessionSearch = MakeShareable(new FOnlineSessionSearch());
+			/*SessionSearch = MakeShareable(new FOnlineSessionSearch());
 			if (SessionSearch)
 			{
 				SessionSearch->bIsLanQuery = true;
-				UE_LOG(LogTemp, Warning, TEXT("Starting Find Session"));
 				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
-			}
+			}*/
 		}
 	}
 	else
@@ -92,16 +91,21 @@ void UServerInstance::Host()
 {
 	if (SessionInterface.IsValid())
 	{
-		auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
-
-		if (nullptr != ExistingSession)
+		// 세션 검색을 시작합니다.
+		SessionSearch = MakeShareable(new FOnlineSessionSearch());
+		if (SessionSearch)
 		{
-			SessionInterface->DestroySession(SESSION_NAME);
+			SessionSearch->bIsLanQuery = true;
+			UE_LOG(LogTemp, Warning, TEXT("Starting to find sessions"));
 
-		}
-		else
-		{
-			CreateSession();
+			// 세션을 검색하고 완료 시 콜백을 처리합니다.
+			SessionSearch = MakeShareable(new FOnlineSessionSearch());
+			if (SessionSearch)
+			{
+				SessionSearch->bIsLanQuery = true;
+				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+			}
+			//SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UServerInstance::OnFindSessionComplete);
 		}
 	}
 }
@@ -121,7 +125,7 @@ void UServerInstance::OnCreateSessionComplete(FName SessionName, bool Success)
 
 	if (GWorld)
 	{
-		UE_LOG(LogTemp, Log, TEXT("ServerTravel to /Game/FirstPerson/Maps/FirstPersonMap?listen"));
+		UE_LOG(LogTemp, Log, TEXT("ServerTravel to /Game/FirstPerson/Maps/Play?listen"));
 		GWorld->ServerTravel("/Game/Maps/Play?listen");
 	}
 	else
@@ -149,6 +153,41 @@ void UServerInstance::OnFindSessionComplete(bool Success)
 			UE_LOG(LogTemp, Warning, TEXT("Found Session Name : %s"), *SearchResult.GetSessionIdStr());
 		}
 	}
+
+	if (Success && SessionSearch.IsValid() && SessionSearch->SearchResults.Num() > 0)
+	{
+		// 세션이 존재하는 경우
+		UE_LOG(LogTemp, Warning, TEXT("Found sessions, joining the first available session"));
+
+		// 현재 세션에 참가 중인지 확인
+		auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+		if (ExistingSession != nullptr)
+		{
+			// 이미 세션에 참가 중인 경우 세션을 종료
+			UE_LOG(LogTemp, Warning, TEXT("Already in a session, leaving current session to join a new one."));
+			SessionInterface->DestroySession(SESSION_NAME);
+		}
+
+		// 첫 번째 세션에 참가
+		FString Address = TEXT("172.31.2.235"); // 올바른 IP와 포트
+		
+		Join(Address);
+	}
+	else
+	{
+		// 세션이 없으므로 새 세션 생성
+		UE_LOG(LogTemp, Warning, TEXT("No sessions found, creating a new session"));
+		auto ExistingSession = SessionInterface->GetNamedSession(SESSION_NAME);
+
+		if (ExistingSession != nullptr)
+		{
+			SessionInterface->DestroySession(SESSION_NAME);
+		}
+		else
+		{
+			CreateSession();
+		}
+	}
 }
 
 void UServerInstance::CreateSession()
@@ -158,8 +197,11 @@ void UServerInstance::CreateSession()
 		FOnlineSessionSettings SessionSettings;
 		SessionSettings.bIsLANMatch = true;
 		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.bAllowJoinInProgress = true;
 		SessionSettings.bShouldAdvertise = true;
-		SessionInterface->CreateSession(0, TEXT("My Session Game"), SessionSettings);
+
+		FString SessionName = FString::Printf(TEXT("MySessionGame_%lld"), FDateTime::Now().GetTicks());
+		SessionInterface->CreateSession(0, FName(*SessionName), SessionSettings);
 	}
 }
 

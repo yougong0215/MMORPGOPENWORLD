@@ -13,21 +13,9 @@ bool UMainMenu::Initialize()
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
-	/*if (!HostButton)
-		return false;
-	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostServer);*/
-
 	if (!JoinButton)
 		return false;
 	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
-
-	/*if (!CancelJoinMenuButton)
-		return false;
-	CancelJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
-
-	if (!ConfirmJoinMenuButton)
-		return false;
-	ConfirmJoinMenuButton->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);*/
 
 	if (!QuitButton)
 		return false;
