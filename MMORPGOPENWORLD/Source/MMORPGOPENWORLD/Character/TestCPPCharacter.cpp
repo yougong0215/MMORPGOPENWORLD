@@ -1,5 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "TestCPPCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -22,7 +20,7 @@ ATestCPPCharacter::ATestCPPCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-		
+
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -42,8 +40,8 @@ ATestCPPCharacter::ATestCPPCharacter()
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 1500.0f; 
-	CameraBoom->bUsePawnControlRotation = true; 
+	CameraBoom->TargetArmLength = 1500.0f;
+	CameraBoom->bUsePawnControlRotation = true;
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
@@ -77,49 +75,105 @@ void ATestCPPCharacter::BeginPlay()
 
 void ATestCPPCharacter::Fire()
 {
-	if (Skill == nullptr)
-		return;
-
-	if (HasAuthority()) // 서버에서 호출일 때
-	{
-		Skill->SetFire(this, GetWorld());
-	}
-	else
-	{
-		ServerFire(); // 서버에 요청
-	}
+	
 }
 
 void ATestCPPCharacter::Fire1()
 {
-	Skill = Skill1;
-	Fire();
+	if (Skill1 == nullptr)
+		return;
+
+	if (HasAuthority()) // 서버에서 호출일 때
+	{
+		Skill1->SetFire(this, GetWorld());
+	}
+	else
+	{
+		ServerFire1(); // 서버에 요청
+	}
 }
 
 void ATestCPPCharacter::Fire2()
 {
-	Skill = Skill2;
-	Fire();
+	if (Skill2 == nullptr)
+		return;
+
+	if (HasAuthority()) // 서버에서 호출일 때
+	{
+		Skill2->SetFire(this, GetWorld());
+	}
+	else
+	{
+		ServerFire2(); // 서버에 요청
+	}
 }
 
 void ATestCPPCharacter::Fire3()
 {
-	Skill = Skill3;
-	Fire();
+	if (Skill3 == nullptr)
+		return;
+
+	if (HasAuthority()) // 서버에서 호출일 때
+	{
+		Skill3->SetFire(this, GetWorld());
+	}
+	else
+	{
+		ServerFire3(); // 서버에 요청
+	}
 }
 
 void ATestCPPCharacter::Fire4()
 {
-	Skill = Skill4;
-	Fire();
+	if (Skill4 == nullptr)
+		return;
+
+	if (HasAuthority()) // 서버에서 호출일 때
+	{
+		Skill4->SetFire(this, GetWorld());
+	}
+	else
+	{
+		ServerFire4(); // 서버에 요청
+	}
 }
 
-void ATestCPPCharacter::ServerFire_Implementation()
+void ATestCPPCharacter::ServerFire1_Implementation()
 {
-	Skill->SetFire(this, GetWorld()); // 서버에서 호출
+	Skill1->SetFire(this, GetWorld()); // 서버에서 호출
 }
 
-bool ATestCPPCharacter::ServerFire_Validate()
+bool ATestCPPCharacter::ServerFire1_Validate()
+{
+	return true; // 검증 로직 추가 가능
+}
+
+void ATestCPPCharacter::ServerFire2_Implementation()
+{
+	Skill2->SetFire(this, GetWorld()); // 서버에서 호출
+}
+
+bool ATestCPPCharacter::ServerFire2_Validate()
+{
+	return true; // 검증 로직 추가 가능
+}
+
+void ATestCPPCharacter::ServerFire3_Implementation()
+{
+	Skill3->SetFire(this, GetWorld()); // 서버에서 호출
+}
+
+bool ATestCPPCharacter::ServerFire3_Validate()
+{
+	return true; // 검증 로직 추가 가능
+}
+
+void ATestCPPCharacter::ServerFire4_Implementation()
+{
+	Skill4->SetFire(this, GetWorld()); // 서버에서 호출
+}
+
+bool ATestCPPCharacter::ServerFire4_Validate()
 {
 	return true; // 검증 로직 추가 가능
 }
@@ -130,7 +184,7 @@ void ATestCPPCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 {
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
-		
+
 		//Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
@@ -162,7 +216,7 @@ void ATestCPPCharacter::Move(const FInputActionValue& Value)
 
 		// get forward vector
 		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
+
 		// get right vector 
 		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
@@ -187,23 +241,21 @@ void ATestCPPCharacter::Look(const FInputActionValue& Value)
 
 void ATestCPPCharacter::AssignRandomSkill()
 {
-	if (SkillList.Num() > 0)
+	// 스킬 리스트의 개수를 가져옵니다.
+	int32 SkillCount = SkillList.Num();
+
+	if (SkillCount > 0)
 	{
-		// 스킬 리스트의 개수를 가져옵니다.
-		int32 SkillCount = SkillList.Num();
-
-		if (SkillCount > 0)
-		{
-			// 랜덤 인덱스를 생성합니다.
-			int32 RandomIndex = UKismetMathLibrary::RandomIntegerInRange(0, SkillCount - 1);
-
-			// 랜덤으로 선택한 스킬을 할당합니다.
-			Skill4 = SkillList[RandomIndex];
-			Skill3 = SkillList[(RandomIndex + 1) % (SkillCount - 1)];
-			Skill2 = SkillList[(RandomIndex + 2) % (SkillCount - 1)];
-			Skill1 = SkillList[(RandomIndex + 3) % (SkillCount - 1)];
-		}
+		// 랜덤 인덱스를 생성합니다.
+		int32 RandomIndex = UKismetMathLibrary::RandomIntegerInRange(0, SkillCount - 1);
+		// 랜덤으로 선택한 스킬을 할당합니다.
+		Skill4 = SkillList[RandomIndex];
+		Skill3 = SkillList[(RandomIndex + 1) % (SkillCount - 1)];
+		Skill2 = SkillList[(RandomIndex + 2) % (SkillCount - 1)];
+		Skill1 = SkillList[(RandomIndex + 3) % (SkillCount - 1)];
 	}
+
+
 }
 
 void ATestCPPCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -213,4 +265,8 @@ void ATestCPPCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	// SkillList 복제 추가
 	DOREPLIFETIME(ATestCPPCharacter, SkillList);
 	DOREPLIFETIME(ATestCPPCharacter, Skill);
+	DOREPLIFETIME(ATestCPPCharacter, Skill1);
+	DOREPLIFETIME(ATestCPPCharacter, Skill2);
+	DOREPLIFETIME(ATestCPPCharacter, Skill3);
+	DOREPLIFETIME(ATestCPPCharacter, Skill4);
 }

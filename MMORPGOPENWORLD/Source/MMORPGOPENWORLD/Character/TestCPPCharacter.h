@@ -74,7 +74,16 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerFire(); // 서버에서 Fire 호출
+	void ServerFire1(); // 서버에서 Fire 호출
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire2(); // 서버에서 Fire 호출
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire3(); // 서버에서 Fire 호출
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire4(); // 서버에서 Fire 호출
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
@@ -83,12 +92,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TObjectPtr<class USkillDataListAsset> Skill;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TObjectPtr<class USkillDataListAsset> Skill1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TObjectPtr<class USkillDataListAsset> Skill2;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TObjectPtr<class USkillDataListAsset> Skill3;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TObjectPtr<class USkillDataListAsset> Skill4;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
