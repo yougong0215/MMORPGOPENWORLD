@@ -5,7 +5,26 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "UObject/ConstructorHelpers.h"
 
+// 생성자
 ATestCPPGameMode::ATestCPPGameMode()
+{
+    PrimaryActorTick.bCanEverTick = true; // Tick을 활성화
+
+    // 초기 기본 캐릭터 클래스를 설정
+    UpdateDefaultPawnClass();
+}
+
+// Tick 함수
+void ATestCPPGameMode::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    // 매 프레임마다 기본 캐릭터 클래스를 업데이트
+    UpdateDefaultPawnClass();
+}
+
+// 기본 캐릭터 클래스를 업데이트하는 함수
+void ATestCPPGameMode::UpdateDefaultPawnClass()
 {
     // 캐릭터 클래스를 배열로 관리
     TArray<FString> CharacterPaths = {
