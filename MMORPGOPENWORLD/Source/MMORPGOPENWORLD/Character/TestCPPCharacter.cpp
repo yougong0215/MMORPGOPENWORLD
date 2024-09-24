@@ -66,7 +66,6 @@ void ATestCPPCharacter::BeginPlay()
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
 // Input
 
 void ATestCPPCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
