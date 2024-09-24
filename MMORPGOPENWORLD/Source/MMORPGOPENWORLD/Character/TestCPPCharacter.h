@@ -8,6 +8,7 @@
 #include "../Skill/SkillDataListAsset.h"
 #include "TestCPPCharacter.generated.h"
 
+class UABCharacterStatComponent;
 
 UCLASS(config=Game)
 class ATestCPPCharacter : public ACharacter
@@ -35,6 +36,15 @@ class ATestCPPCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* FireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* FireAction1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* FireAction2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* FireAction3;
+
 public:
 	ATestCPPCharacter();
 	
@@ -47,6 +57,11 @@ protected:
 
 public:
 	void Fire();
+	void Fire1();
+	void Fire2();
+	void Fire3();
+	void Fire4();
+
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -62,7 +77,23 @@ public:
 	void ServerFire(); // 서버에서 Fire 호출
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills")
+	TArray<USkillDataListAsset*> SkillList;
+
 	TObjectPtr<class USkillDataListAsset> Skill;
+
+	TObjectPtr<class USkillDataListAsset> Skill1;
+
+	TObjectPtr<class USkillDataListAsset> Skill2;
+
+	TObjectPtr<class USkillDataListAsset> Skill3;
+
+	TObjectPtr<class USkillDataListAsset> Skill4;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+	TObjectPtr<UABCharacterStatComponent> CharacterStat;
+	
+public:
+	void AssignRandomSkill();
 };
 

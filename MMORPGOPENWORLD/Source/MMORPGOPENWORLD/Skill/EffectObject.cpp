@@ -6,6 +6,7 @@
 #include <Components/BoxComponent.h>
 #include "NiagaraFunctionLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 AEffectObject::AEffectObject()
@@ -47,6 +48,12 @@ void AEffectObject::Tick(float DeltaTime)
 void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world)
 {
 	Skill = _skill;
+
+	if (Skill.Music)
+	{
+		// 음악 재생
+		UGameplayStatics::PlaySoundAtLocation(this, Skill.Music, GetActorLocation());
+	}
 
 	FRotator CurrentRotation = OwnerCS->GetActorRotation();
 	FVector location = OwnerCS->GetActorLocation();
