@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "../Skill/SkillDataListAsset.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,6 +62,8 @@ void ATestCPPCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
+
+	AssignRandomSkill();
 }
 
 void ATestCPPCharacter::Fire()
@@ -73,6 +76,30 @@ void ATestCPPCharacter::Fire()
 	{
 		ServerFire(); // 서버에 요청
 	}
+}
+
+void ATestCPPCharacter::Fire1()
+{
+	Skill = Skill1;
+	Fire();
+}
+
+void ATestCPPCharacter::Fire2()
+{
+	Skill = Skill2;
+	Fire();
+}
+
+void ATestCPPCharacter::Fire3()
+{
+	Skill = Skill3;
+	Fire();
+}
+
+void ATestCPPCharacter::Fire4()
+{
+	Skill = Skill4;
+	Fire();
 }
 
 void ATestCPPCharacter::ServerFire_Implementation()
@@ -102,7 +129,10 @@ void ATestCPPCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCPPCharacter::Look);
 
-		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &ATestCPPCharacter::Fire);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &ATestCPPCharacter::Fire1);
+		EnhancedInputComponent->BindAction(FireAction1, ETriggerEvent::Completed, this, &ATestCPPCharacter::Fire2);
+		EnhancedInputComponent->BindAction(FireAction2, ETriggerEvent::Completed, this, &ATestCPPCharacter::Fire3);
+		EnhancedInputComponent->BindAction(FireAction3, ETriggerEvent::Completed, this, &ATestCPPCharacter::Fire4);
 	}
 
 }
@@ -140,5 +170,26 @@ void ATestCPPCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ATestCPPCharacter::AssignRandomSkill()
+{
+	if (SkillList.Num() > 0)
+	{
+		// 스킬 리스트의 개수를 가져옵니다.
+		int32 SkillCount = SkillList.Num();
+
+		if (SkillCount > 0)
+		{
+			// 랜덤 인덱스를 생성합니다.
+			int32 RandomIndex = UKismetMathLibrary::RandomIntegerInRange(0, SkillCount - 1);
+
+			// 랜덤으로 선택한 스킬을 할당합니다.
+			Skill4 = SkillList[RandomIndex];
+			Skill3 = SkillList[(RandomIndex + 1) % SkillCount - 1];
+			Skill2 = SkillList[(RandomIndex + 2) % SkillCount - 1];
+			Skill1 = SkillList[(RandomIndex + 3) % SkillCount - 1];
+		}
 	}
 }
