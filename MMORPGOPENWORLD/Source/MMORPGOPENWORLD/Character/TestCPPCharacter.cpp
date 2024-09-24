@@ -63,6 +63,28 @@ void ATestCPPCharacter::BeginPlay()
 	}
 }
 
+void ATestCPPCharacter::Fire()
+{
+	if (HasAuthority()) // 서버에서 호출일 때
+	{
+		Skill->SetFire(this, GetWorld());
+	}
+	else
+	{
+		ServerFire(); // 서버에 요청
+	}
+}
+
+void ATestCPPCharacter::ServerFire_Implementation()
+{
+	Skill->SetFire(this, GetWorld()); // 서버에서 호출
+}
+
+bool ATestCPPCharacter::ServerFire_Validate()
+{
+	return true; // 검증 로직 추가 가능
+}
+
 // Input
 
 void ATestCPPCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -119,9 +141,4 @@ void ATestCPPCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void ATestCPPCharacter::Fire()
-{
-	Skill->SetFire(this, GetWorld());
 }

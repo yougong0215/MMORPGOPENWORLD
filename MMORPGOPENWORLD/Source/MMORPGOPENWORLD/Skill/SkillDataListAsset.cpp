@@ -4,6 +4,7 @@
 #include "SkillDataListAsset.h"
 #include "CollisionObject.h"
 #include "EffectObject.h"
+#include "Net/UnrealNetwork.h"
 
 void USkillDataListAsset::SetFire(TObjectPtr<AActor> OwnerCS, UWorld* _world)
 {
@@ -13,11 +14,13 @@ void USkillDataListAsset::SetFire(TObjectPtr<AActor> OwnerCS, UWorld* _world)
 
         if (EffectObjectBPClass)
         {
-            //if(GetWorld())
             AEffectObject* obj = _world->SpawnActor<AEffectObject>(EffectObjectBPClass);
 
-
-            obj->Begin(OwnerCS, SkillList[i], _world);
+            if (obj)
+            {
+                obj->Begin(OwnerCS, SkillList[i], _world);
+                obj->SetReplicates(true); // 복제 가능하도록 설정
+            }
         }
 
     }

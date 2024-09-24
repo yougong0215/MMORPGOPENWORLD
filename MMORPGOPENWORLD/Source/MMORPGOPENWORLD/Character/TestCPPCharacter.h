@@ -58,6 +58,9 @@ public:
 
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerFire(); // 서버에서 Fire 호출
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skill, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class USkillDataListAsset> Skill;
