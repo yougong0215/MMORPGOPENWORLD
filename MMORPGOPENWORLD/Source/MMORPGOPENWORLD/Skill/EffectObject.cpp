@@ -38,7 +38,7 @@ void AEffectObject::Tick(float DeltaTime)
 		return;
 
 	FVector ForwardVector = GetActorForwardVector();
-	FVector MoveDirection = ForwardVector * 1200 * DeltaTime;
+	FVector MoveDirection = ForwardVector * 100 * Skill.BulletSpeed * DeltaTime;
 	SetActorLocation(GetActorLocation() + MoveDirection);
 
 	CurrentLocation = GetActorLocation();
