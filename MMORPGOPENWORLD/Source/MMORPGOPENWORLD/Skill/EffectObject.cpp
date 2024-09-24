@@ -7,6 +7,8 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include <Kismet/GameplayStatics.h>
+#include <Character/ABCharacterStatComponent.h>
+#include <Character/TestCPPCharacter.h>
 
 // Sets default values
 AEffectObject::AEffectObject()
@@ -48,7 +50,7 @@ void AEffectObject::Tick(float DeltaTime)
 void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world)
 {
 	Skill = _skill;
-
+	Owner = OwnerCS;
 	if (Skill.Music)
 	{
 		// 음악 재생
@@ -67,7 +69,7 @@ void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorl
 
 	if (Skill.Effect)
 	{
-		comp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(_world, Skill.Effect, location + FVector(0, 0, 60));
+		comp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(_world, Skill.Effect, location + FVector(0, 0, 0));
 		comp->SetWorldRotation(CurrentRotation);
 		comp->SetWorldScale3D(FVector(2.0f));
 		comp->SetVisibility(true);
@@ -87,7 +89,22 @@ void AEffectObject::OverlapedObject(AActor* OverlapedObject)
 {
 	if (Owner != OverlapedObject)
 	{
+		// OverlapedObject가 플레이어인지 확인
+		ACharacter* HitCharacter = Cast<ACharacter>(OverlapedObject);
+		if (HitCharacter)
+		{
+			// 플레이어의 StatComponent를 가져옴
+			UABCharacterStatComponent* StatComponent = HitCharacter->FindComponentByClass<UABCharacterStatComponent>();
+			if (StatComponent)
+			{
+				// HP 감소 처리
+				float Damage = 20.0f; // 데미지 값 설정
+				StatComponent->ApplyDamage(Damage);
 
+				// 로그 출력으로 확인
+				UE_LOG(LogTemp, Log, TEXT("Player HP decreased by %f"), Damage);
+			}
+		}
 	}
 }
 

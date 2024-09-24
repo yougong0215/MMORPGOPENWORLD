@@ -27,11 +27,19 @@ public:
 	void SetHp(float NewHp);
 	float ApplyDamage(float InDamage);
 
+	// 플레이어를 일정 시간 동안 움직이지 못하게 하는 함수
+	void DisableMovement();
+
+	// 3초 후에 플레이어의 움직임을 다시 허용하는 함수
+	void EnableMovement();
+
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = Stat)
 	float MaxHp;
 
 	UPROPERTY(Transient, VisibleDefaultsOnly, Category = Stat)
 	float CurrentHp;
+
+	FTimerHandle MovementDisableTimerHandle;
 		
 };
