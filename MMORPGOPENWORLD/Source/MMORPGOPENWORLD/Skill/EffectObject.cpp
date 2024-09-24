@@ -50,7 +50,7 @@ void AEffectObject::Tick(float DeltaTime)
 void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world)
 {
 	Skill = _skill;
-
+	Owner = OwnerCS;
 	if (Skill.Music)
 	{
 		// 음악 재생
@@ -69,7 +69,7 @@ void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorl
 
 	if (Skill.Effect)
 	{
-		comp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(_world, Skill.Effect, location + FVector(0, 0, 60));
+		comp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(_world, Skill.Effect, location + FVector(0, 0, 0));
 		comp->SetWorldRotation(CurrentRotation);
 		comp->SetWorldScale3D(FVector(2.0f));
 		comp->SetVisibility(true);
