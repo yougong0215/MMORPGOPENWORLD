@@ -8,6 +8,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
+#include "../Skill/SkillDataListAsset.h"
 #include "EnhancedInputSubsystems.h"
 
 
@@ -30,25 +31,21 @@ ATestCPPCharacter::ATestCPPCharacter()
 
 	// Note: For faster iteration times these variables, and many more, can be tweaked in the Character Blueprint
 	// instead of recompiling to adjust them
-	GetCharacterMovement()->JumpZVelocity = 700.f;
-	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
-	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
+	GetCharacterMovement()->JumpZVelocity = 800.f;
+	GetCharacterMovement()->AirControl = 0.1f;
+	GetCharacterMovement()->MaxWalkSpeed = 700.f;
+	GetCharacterMovement()->MinAnalogWalkSpeed = 100.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
-	// Create a camera boom (pulls in towards the player if there is a collision)
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; // The camera follows at this distance behind the character	
-	CameraBoom->bUsePawnControlRotation = true; // Rotate the arm based on the controller
+	CameraBoom->TargetArmLength = 400.0f; 
+	CameraBoom->bUsePawnControlRotation = true; 
 
 	// Create a follow camera
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
-	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
-	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
-
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+	FollowCamera->bUsePawnControlRotation = false;
 }
 
 void ATestCPPCharacter::BeginPlay()
@@ -83,6 +80,7 @@ void ATestCPPCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCPPCharacter::Look);
 
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &ATestCPPCharacter::Fire);
 	}
 
 }
@@ -123,6 +121,7 @@ void ATestCPPCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-
-
-
+void ATestCPPCharacter::Fire()
+{
+	Skill->SetFire(this, GetWorld());
+}

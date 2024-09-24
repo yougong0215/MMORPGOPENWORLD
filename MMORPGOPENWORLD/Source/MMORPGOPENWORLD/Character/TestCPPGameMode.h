@@ -13,6 +13,10 @@ class ATestCPPGameMode : public AGameModeBase
 
 public:
 	ATestCPPGameMode();
+protected:
+	// 매 프레임 호출되는 함수
+	virtual void Tick(float DeltaTime) override;
+	void UpdateDefaultPawnClass();
 };
 
 
