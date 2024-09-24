@@ -34,13 +34,13 @@ ATestCPPCharacter::ATestCPPCharacter()
 	// instead of recompiling to adjust them
 	GetCharacterMovement()->JumpZVelocity = 800.f;
 	GetCharacterMovement()->AirControl = 0.1f;
-	GetCharacterMovement()->MaxWalkSpeed = 700.f;
+	GetCharacterMovement()->MaxWalkSpeed = 1000.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 100.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->TargetArmLength = 400.0f; 
+	CameraBoom->TargetArmLength = 1500.0f; 
 	CameraBoom->bUsePawnControlRotation = true; 
 
 	// Create a follow camera
