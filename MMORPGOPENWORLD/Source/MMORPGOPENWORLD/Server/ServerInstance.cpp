@@ -196,7 +196,7 @@ void UServerInstance::CreateSession()
 	{
 		FOnlineSessionSettings SessionSettings;
 		SessionSettings.bIsLANMatch = true;
-		SessionSettings.NumPublicConnections = 2;
+		SessionSettings.NumPublicConnections = 50;
 		SessionSettings.bAllowJoinInProgress = true;
 		SessionSettings.bShouldAdvertise = true;
 
