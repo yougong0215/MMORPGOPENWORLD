@@ -77,9 +77,10 @@ public:
 	void ServerFire(); // 서버에서 Fire 호출
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TArray<USkillDataListAsset*> SkillList;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Skills", Replicated)
 	TObjectPtr<class USkillDataListAsset> Skill;
 
 	TObjectPtr<class USkillDataListAsset> Skill1;
@@ -95,5 +96,7 @@ public:
 	
 public:
 	void AssignRandomSkill();
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };
 

@@ -8,7 +8,6 @@
 
 void USkillDataListAsset::SetFire(TObjectPtr<AActor> OwnerCS, UWorld* _world)
 {
-
     for (int i = 0; i < SkillList.Num(); i++)
     {
 
