@@ -195,9 +195,9 @@ void ATestCPPCharacter::AssignRandomSkill()
 
 			// 랜덤으로 선택한 스킬을 할당합니다.
 			Skill4 = SkillList[RandomIndex];
-			Skill3 = SkillList[(RandomIndex + 1) % SkillCount - 1];
-			Skill2 = SkillList[(RandomIndex + 2) % SkillCount - 1];
-			Skill1 = SkillList[(RandomIndex + 3) % SkillCount - 1];
+			Skill3 = SkillList[(RandomIndex + 1) % (SkillCount - 1)];
+			Skill2 = SkillList[(RandomIndex + 2) % (SkillCount - 1)];
+			Skill1 = SkillList[(RandomIndex + 3) % (SkillCount - 1)];
 		}
 	}
 }
