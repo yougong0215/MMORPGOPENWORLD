@@ -14,6 +14,7 @@ AEffectObject::AEffectObject()
 	SetRootComponent(comp);
 	bReplicates = true;            // 오브젝트 복제 설정
 	bNetLoadOnClient = true;       // 클라이언트에서 로드 허용
+	SetReplicateMovement(true);
 	//_isStart = false;
 }
 
@@ -36,6 +37,8 @@ void AEffectObject::Tick(float DeltaTime)
 	FVector ForwardVector = GetActorForwardVector();
 	FVector MoveDirection = ForwardVector * 1200 * DeltaTime;
 	SetActorLocation(GetActorLocation() + MoveDirection);
+
+	CurrentLocation = GetActorLocation();
 
 	if (comp && comp->IsValidLowLevel())
 		comp->AddRelativeLocation(MoveDirection);
@@ -81,9 +84,26 @@ void AEffectObject::OverlapedObject(AActor* OverlapedObject)
 	}
 }
 
+void AEffectObject::OnRep_Location()
+{
+	SetActorLocation(CurrentLocation);
+}
+
+void AEffectObject::OnRep_Skill()
+{
+	if (comp)
+	{
+		comp->SetAsset(Skill.Effect);
+		// 나이아가라 효과를 재생
+		comp->Activate();
+		// 필요에 따라 다른 스킬 관련 효과 추가
+	}
+}
+
 void AEffectObject::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AEffectObject, Skill);
+	DOREPLIFETIME(AEffectObject, CurrentLocation);
 }

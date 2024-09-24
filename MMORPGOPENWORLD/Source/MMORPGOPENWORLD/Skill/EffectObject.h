@@ -35,14 +35,18 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_Skill) // Replication 설정
 	FSkillStruct Skill;
 
+	UFUNCTION()
+	void OnRep_Location();
+
 	bool _isStart = false;
 public:
 	// OnRep 함수 정의
 	UFUNCTION()
-	void OnRep_Skill()
-	{
-		// Skill이 변경되었을 때 처리할 코드
-	}
+	void OnRep_Skill();
+
+	UPROPERTY(ReplicatedUsing = OnRep_Location)
+	FVector CurrentLocation;
+
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
