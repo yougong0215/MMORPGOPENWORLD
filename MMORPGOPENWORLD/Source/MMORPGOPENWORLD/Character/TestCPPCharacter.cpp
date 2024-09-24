@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "../Skill/SkillDataListAsset.h"
 #include "EnhancedInputSubsystems.h"
+#include "ABCharacterStatComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -47,6 +48,8 @@ ATestCPPCharacter::ATestCPPCharacter()
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	FollowCamera->bUsePawnControlRotation = false;
+
+	CharacterStat = CreateDefaultSubobject<UABCharacterStatComponent>(TEXT("CharacterStat"));
 }
 
 void ATestCPPCharacter::BeginPlay()
@@ -61,6 +64,11 @@ void ATestCPPCharacter::BeginPlay()
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
+	}
+
+	if (CharacterStat)
+	{
+		CharacterStat->SetHp(CharacterStat->GetMaxHp());
 	}
 
 	AssignRandomSkill();

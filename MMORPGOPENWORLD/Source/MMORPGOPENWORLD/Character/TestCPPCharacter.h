@@ -8,6 +8,7 @@
 #include "../Skill/SkillDataListAsset.h"
 #include "TestCPPCharacter.generated.h"
 
+class UABCharacterStatComponent;
 
 UCLASS(config=Game)
 class ATestCPPCharacter : public ACharacter
@@ -61,6 +62,7 @@ public:
 	void Fire3();
 	void Fire4();
 
+
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
@@ -88,7 +90,10 @@ public:
 
 	TObjectPtr<class USkillDataListAsset> Skill4;
 
-	// 랜덤으로 스킬을 할당하는 함수
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+	TObjectPtr<UABCharacterStatComponent> CharacterStat;
+	
+public:
 	void AssignRandomSkill();
 };
 

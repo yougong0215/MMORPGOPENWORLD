@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Sound/SoundBase.h"
 #include "SkillData.generated.h"
 /**
  * 
@@ -30,5 +31,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
 	float BulletSize = 1.0f;
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundBase* Music;
 };
