@@ -25,13 +25,16 @@ void AEffectObject::Tick(float DeltaTime)
 	if (_isStart == false)
 		return;
 
+	if (comp == nullptr)
+		return;
+
 	FVector ForwardVector = GetActorForwardVector();
 	FVector MoveDirection = ForwardVector * 1200 * DeltaTime;
 	SetActorLocation(GetActorLocation() + MoveDirection);
 	comp->AddRelativeLocation(MoveDirection);
 }
 
-// ÇÃ·¹ÀÌ¾î¿¡¼­ ¹ß»çÇØ¾ßµÊ
+// ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ß»ï¿½ï¿½Ø¾ßµï¿½
 void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world)
 {
 	Skill = _skill;
@@ -54,9 +57,9 @@ void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorl
 		comp->SetWorldScale3D(FVector(2.0f));
 		comp->SetVisibility(true);
 		comp->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepWorldTransform);
-		// comp->Activate(); // ÀÏ¹ÝÀûÀ¸·Î ÇÊ¿äÇÏÁö ¾ÊÀ½
+		// comp->Activate(); // ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-		// ÀÌÆåÆ®°¡ »ý¼ºµÇÁö ¾Ê¾ÒÀ» °æ¿ì ¿¡·¯ Ã³¸®
+		// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
 		if (!comp)
 		{
 			UE_LOG(LogTemp, Error, TEXT("Failed to spawn Niagara system"));
@@ -71,6 +74,6 @@ void AEffectObject::OverlapedObject(AActor* OverlapedObject)
 {
 	if (Owner != OverlapedObject)
 	{
-		// ³»°¡ ¾Æ´Ï¸é µ¥¹ÌÁö ÆÇÁ¤
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	}
 }
