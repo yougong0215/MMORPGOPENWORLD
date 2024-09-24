@@ -66,3 +66,11 @@ void AEffectObject::Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorl
 
 	_isStart = true;
 }
+
+void AEffectObject::OverlapedObject(AActor* OverlapedObject)
+{
+	if (Owner != OverlapedObject)
+	{
+		// 내가 아니면 데미지 판정
+	}
+}

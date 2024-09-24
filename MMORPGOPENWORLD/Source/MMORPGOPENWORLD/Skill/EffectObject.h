@@ -27,6 +27,9 @@ public:
 
 	virtual void Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world);
 
+	UFUNCTION(BlueprintCallable, Category = "Func")
+	virtual void OverlapedObject(AActor* OverlapedObject) override;
+
 	//virtual void OverlapedObject(AActor* OverlapedObject) override;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BX)
