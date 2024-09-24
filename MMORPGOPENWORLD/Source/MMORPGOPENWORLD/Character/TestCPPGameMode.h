@@ -12,6 +12,8 @@ class ATestCPPGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	void StartPlay() override;
+
 	ATestCPPGameMode();
 protected:
 	// 매 프레임 호출되는 함수
