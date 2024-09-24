@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "ABCharacterStatComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include <Net/UnrealNetwork.h>
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -76,6 +77,9 @@ void ATestCPPCharacter::BeginPlay()
 
 void ATestCPPCharacter::Fire()
 {
+	if (Skill == nullptr)
+		return;
+
 	if (HasAuthority()) // 서버에서 호출일 때
 	{
 		Skill->SetFire(this, GetWorld());
@@ -200,4 +204,13 @@ void ATestCPPCharacter::AssignRandomSkill()
 			Skill1 = SkillList[(RandomIndex + 3) % (SkillCount - 1)];
 		}
 	}
+}
+
+void ATestCPPCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	// SkillList 복제 추가
+	DOREPLIFETIME(ATestCPPCharacter, SkillList);
+	DOREPLIFETIME(ATestCPPCharacter, Skill);
 }
