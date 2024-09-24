@@ -18,24 +18,32 @@ public:
 	AEffectObject();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Begin(TObjectPtr<AActor> OwnerCS, FSkillStruct _skill, UWorld* _world);
 
-//	UFUNCTION(BlueprintCallable, Category = "Func")
 	virtual void OverlapedObject(AActor* OverlapedObject) override;
 
-	//virtual void OverlapedObject(AActor* OverlapedObject) override;
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = BX)
 	TObjectPtr<class UBoxComponent> BoxComponent;
 	TObjectPtr<class UNiagaraComponent> comp;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_Skill) // Replication 설정
 	FSkillStruct Skill;
 
 	bool _isStart = false;
+public:
+	// OnRep 함수 정의
+	UFUNCTION()
+	void OnRep_Skill()
+	{
+		// Skill이 변경되었을 때 처리할 코드
+	}
+protected:
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
 };
