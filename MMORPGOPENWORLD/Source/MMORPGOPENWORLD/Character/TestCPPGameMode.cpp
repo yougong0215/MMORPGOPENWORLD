@@ -4,6 +4,21 @@
 #include "TestCPPCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h" 
+
+void ATestCPPGameMode::StartPlay()
+{
+    Super::StartPlay();
+
+    USoundBase* Sound = LoadObject<USoundBase>(nullptr, TEXT("/Game/Sound/bgm.bgm"));
+
+    UAudioComponent* AudioComponent = NewObject<UAudioComponent>(this);
+    AudioComponent->bAutoActivate = false;
+        AudioComponent->SetSound(Sound);
+
+    AudioComponent->Play();
+}
 
 // 생성자
 ATestCPPGameMode::ATestCPPGameMode()
